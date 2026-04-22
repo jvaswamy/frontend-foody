@@ -1,0 +1,5 @@
+﻿.search-results__empty {
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+}

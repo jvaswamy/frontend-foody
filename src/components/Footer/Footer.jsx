@@ -1,5 +1,6 @@
 import React from "react";
 import { assets } from "../../assets/assets";
+import { GrRestaurant } from "react-icons/gr";
 import "./Footer.css";
 
 function Footer() {
@@ -7,7 +8,13 @@ function Footer() {
     <div className="footer" id="footer">
       <div className="footer-content">
         <div className="footer-content-left">
-          <img src={assets.logo} alt="" />
+          <div className="logo-container">
+            <GrRestaurant className="restaurant-logo" />
+            <span className="logo-text">
+              <h2>Foody</h2>
+            </span>
+          </div>
+          {/* <img src={assets.logo} alt="" /> */}
           <p>
             this is dummu data for printing logo what's app twitter.so later i
             modify this text.

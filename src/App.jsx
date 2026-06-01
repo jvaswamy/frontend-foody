@@ -7,19 +7,23 @@ import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import PlaceOrderPage from "./pages/PlaceOrder/PlaceOrder";
 import LoginPopup from "./components/LoginPopup/LoginPopup";
+import VerifyPage from "./pages/Verify/Verify";
+import MyOrders from "./pages/Myorders/MyOrders";
+
 function App() {
   const [showLogin, setShowLogin] = useState(false);
 
   return (
     <>
       {showLogin ? <LoginPopup setShowLogin={setShowLogin} /> : <></>}
-
+      <Navbar setShowLogin={setShowLogin} />
       <div className="appContainer">
-        <Navbar setShowLogin={setShowLogin} />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/order" element={<PlaceOrderPage />} />
+          <Route path="/verify" element={<VerifyPage />} />
+          <Route path="/myorders" element={<MyOrders />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>

@@ -5,12 +5,12 @@ import axios from "axios";
 import { assets } from "../../assets/assets";
 
 const MyOrders = () => {
-  const { url, token } = useContext(StoreContext);
+  const { API_URL, token } = useContext(StoreContext);
   const [data, setData] = useState([]);
 
   const fetchOrders = async () => {
     const response = await axios.post(
-      url + "/api/order/userorders",
+      API_URL + "/api/order/userorders",
       {},
       { headers: { token } },
     );
@@ -22,7 +22,7 @@ const MyOrders = () => {
     if (token) {
       fetchOrders();
     }
-  }, [token, url]);
+  }, [token, API_URL]);
 
   return (
     <div className="my-orders">

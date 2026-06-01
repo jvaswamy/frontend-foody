@@ -5,7 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function PlaceOrder() {
-  const { getTotalCartAmount, token, food_list, cartItems, url } =
+  const { getTotalCartAmount, token, food_list, cartItems, API_URL } =
     useContext(StoreContext);
 
   const [data, setData] = useState({
@@ -44,7 +44,7 @@ function PlaceOrder() {
       amount: getTotalCartAmount() + 2,
     };
 
-    const response = await axios.post(url + "/api/order/place", orderData, {
+    const response = await axios.post(API_URL + "/api/order/place", orderData, {
       headers: { token },
     });
 

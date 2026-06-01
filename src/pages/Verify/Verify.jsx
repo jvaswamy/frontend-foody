@@ -4,6 +4,7 @@ import "./Verify.css";
 import { DiJava } from "react-icons/di";
 import { StoreContext } from "../../context/StoreContext";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 function Verify() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -14,13 +15,21 @@ function Verify() {
   const navigate = useNavigate();
 
   const verifyPayment = async () => {
-    const response = await axios.post(API_URL + "/api/order/verify", {
-      success,
-      orderId,
-    });
-    if (response.data.success) {
-      navigate("/myorders");
-    } else {
+    try {
+      const response = await axios.post(API_URL + "/api/order/verify", {
+        success,
+        orderId,
+      });
+      if (response.data.success) {
+        toast.success("Payment successful — redirecting to My Orders.");
+        navigate("/myorders");
+      } else {
+        toast.error("Payment not completed.");
+        navigate("/");
+      }
+    } catch (err) {
+      console.error("verifyPayment error:", err);
+      toast.error("Payment verification failed.");
       navigate("/");
     }
   };

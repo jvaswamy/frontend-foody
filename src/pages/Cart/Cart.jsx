@@ -1,103 +1,82 @@
-import { Link, useNavigate } from "react-router-dom";
-import { FiArrowRight, FiShoppingBag } from "react-icons/fi";
-import CartItem from "../../components/CartItem/CartItem";
-import { useAuth } from "../../context/AuthContext";
-import { useCart } from "../../context/CartContext";
-import { formatCurrency } from "../../utils/formatCurrency";
+import React, { useContext } from "react";
+import { StoreContext } from "../../context/StoreContext";
 import "./Cart.css";
+import { useNavigate } from "react-router-dom";
 
-function CartPage() {
+const Cart = () => {
+  const { cartItems, food_list, removeFromCart, getTotalCartAmount, url } =
+    useContext(StoreContext);
+
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
-  const {
-    cartItems,
-    totalItems,
-    totalPrice,
-    increaseQuantity,
-    decreaseQuantity,
-    removeItem,
-    clearCart,
-  } = useCart();
-
-  const handleCheckout = () => {
-    if (!isAuthenticated) {
-      navigate("/login", { state: { from: "/cart" } });
-      return;
-    }
-
-    if (cartItems.length === 0) {
-      return;
-    }
-
-    clearCart();
-    window.alert("Your order has been placed successfully!");
-    navigate("/");
-  };
 
   return (
-    <main className="page-container cart-page">
-      <div className="cart-page__header">
-        <div>
-          <h1 className="section-title">Your Cart</h1>
-          <p className="section-subtitle">
-            {totalItems} item{totalItems !== 1 ? "s" : ""} ready for checkout.
-          </p>
+    <div className="cart">
+      <div className="cart-items">
+        <div className="cart-items-title">
+          <p>Items</p>
+          <p>Title</p>
+          <p>Price</p>
+          <p>Quantity</p>
+          <p>Total</p>
+          <p>Remove</p>
         </div>
-        <Link to="/" className="btn btn-secondary">
-          Continue Shopping
-        </Link>
+        <br />
+        <hr />
+        {food_list.map((item, index) => {
+          if (cartItems[item._id] > 0) {
+            return (
+              <div key={index}>
+                <div className="cart-items-title cart-items-item ">
+                  <img src={url + "/images/" + item.image} alt="" />
+                  <p>{item.name}</p>
+                  <p>${item.price}</p>
+                  <p>{cartItems[item._id]}</p>
+                  <p>${item.price * cartItems[item._id]}</p>
+                  <p onClick={() => removeFromCart(item._id)} className="cross">
+                    X
+                  </p>
+                </div>
+                <hr />
+              </div>
+            );
+          }
+        })}
       </div>
-
-      {cartItems.length === 0 ? (
-        <section className="panel empty-state">
-          <FiShoppingBag className="cart-page__empty-icon" />
-          <h2>Your cart is empty</h2>
-          <p>Browse restaurants and add delicious items to get started.</p>
-          <Link to="/" className="btn btn-primary">
-            Explore Restaurants
-          </Link>
-        </section>
-      ) : (
-        <div className="cart-page__layout">
-          <section className="cart-page__items">
-            {cartItems.map((item) => (
-              <CartItem
-                key={item.id}
-                item={item}
-                onIncrease={increaseQuantity}
-                onDecrease={decreaseQuantity}
-                onRemove={removeItem}
-              />
-            ))}
-          </section>
-
-          <aside className="cart-page__summary panel">
-            <h2>Order Summary</h2>
-            <div className="cart-page__row">
-              <span>Total items</span>
-              <strong>{totalItems}</strong>
+      <div className="cart-bottom">
+        <div className="cart-total">
+          <h2>Cart Totals</h2>
+          <div>
+            <div className="cart-total-details">
+              <p>Subtotal</p>
+              <p>${getTotalCartAmount()}</p>
             </div>
-            <div className="cart-page__row">
-              <span>Total price</span>
-              <strong>{formatCurrency(totalPrice)}</strong>
+            <hr />
+            <div className="cart-total-details">
+              <p>Delivery Fee</p>
+              <p>${getTotalCartAmount() === 0 ? 0 : 2}</p>
             </div>
-            <p className="cart-page__note">
-              {isAuthenticated
-                ? "You are logged in and can place the order now."
-                : "You will be redirected to the login page before checkout."}
-            </p>
-            <button type="button" className="btn btn-primary cart-page__checkout" onClick={handleCheckout}>
-              {isAuthenticated ? "Place Order" : "Login to Checkout"}
-              <FiArrowRight />
-            </button>
-            <button type="button" className="btn btn-ghost cart-page__clear" onClick={clearCart}>
-              Clear Cart
-            </button>
-          </aside>
+            <hr />
+            <div className="cart-total-details">
+              <b>Total</b>
+              <b>
+                ${getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 2}
+              </b>
+            </div>
+          </div>
+          <button onClick={() => navigate("/order")}>Proceed to Payment</button>
         </div>
-      )}
-    </main>
+        <div className="cart-promocode">
+          <div>
+            <p>If you have a promo code, enter it here </p>
+            <div className="cart-promocode-input">
+              <input type="text" placeholder="Promo Code" />
+              <button>Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
-}
+};
 
-export default CartPage;
+export default Cart;

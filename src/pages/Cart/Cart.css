@@ -14,7 +14,12 @@
 }
 
 .cart-items-item img {
-  width: 50px;
+  width: 80px;
+  height: 50px;
+  object-fit: cover;
+  display: inline-block;
+  vertical-align: middle;
+  border-radius: 6px;
 }
 .cart hr {
   height: 1px;

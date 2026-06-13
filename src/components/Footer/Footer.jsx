@@ -4,49 +4,70 @@ import { GrRestaurant } from "react-icons/gr";
 import "./Footer.css";
 
 function Footer() {
+  const year = new Date().getFullYear();
+
   return (
-    <div className="footer" id="footer">
+    <footer className="footer" id="footer">
       <div className="footer-content">
         <div className="footer-content-left">
-          <div className="logo-container">
+          <div className="logo-container" aria-hidden>
             <GrRestaurant className="restaurant-logo" />
             <span className="logo-text">
               <h2>Foody</h2>
             </span>
           </div>
-          {/* <img src={assets.logo} alt="" /> */}
           <p>
-            this is dummu data for printing logo what's app twitter.so later i
-            modify this text.
+            Foody is a simple, fast way to discover and order delicious meals
+            from local restaurants. We deliver fresh food to your doorstep with
+            care and speed.
           </p>
-          <div className="footer-social-icons">
-            <img src={assets.facebook_icon} alt="" />
-            <img src={assets.twitter_icon} alt="" />
-            <img src={assets.linkedin_icon} alt="" />
+
+          <div className="footer-social-icons" aria-label="social links">
+            <img src={assets.facebook_icon} alt="Facebook" />
+            <img src={assets.twitter_icon} alt="Twitter" />
+            <img src={assets.linkedin_icon} alt="LinkedIn" />
           </div>
         </div>
-        <div className="footer-content-center">
-          <h2>COMPANY</h2>
+
+        <nav className="footer-content-center" aria-label="footer navigation">
+          <h3>Company</h3>
           <ul>
-            <li>Home</li>
-            <li>About Us</li>
-            <li>Delivery</li>
-            <li>Privarcy Policy</li>
+            <li>
+              <a href="#home">Home</a>
+            </li>
+            <li>
+              <a href="#about">About Us</a>
+            </li>
+            <li>
+              <a href="#delivery">Delivery</a>
+            </li>
+            <li>
+              <a href="/privacy">Privacy Policy</a>
+            </li>
           </ul>
-        </div>
+        </nav>
+
         <div className="footer-content-right">
-          <h2>GET IN TOUCH</h2>
+          <h3>Contact</h3>
           <ul>
-            <li>+91 0000000000</li>
-            <li>contact@tomato.com</li>
+            <li>
+              <a href="tel:+911234567890">+91 12345 67890</a>
+            </li>
+            <li>
+              <a href="mailto:support@foody.com">support@foody.com</a>
+            </li>
           </ul>
         </div>
       </div>
+
       <hr />
-      <p className="footer-copyright">
-        Copyright 2026 foody.com - All Right Reserved.
-      </p>
-    </div>
+
+      <div className="footer-bottom">
+        <p className="footer-copyright">
+          &copy; {year} Foody. All rights reserved.
+        </p>
+      </div>
+    </footer>
   );
 }
 

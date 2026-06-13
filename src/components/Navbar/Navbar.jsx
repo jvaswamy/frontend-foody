@@ -28,7 +28,7 @@ const Header = ({ setShowLogin }) => {
             <h2>Foody</h2>
           </span>
         </div>
-        {/* <img src={assets.logo} alt="" className="logo" /> */}
+        
       </Link>
       <ul className="navbar-menu">
         <Link

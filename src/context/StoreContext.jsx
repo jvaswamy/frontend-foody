@@ -5,7 +5,7 @@ import { API_URL } from "../data/apiPath";
 
 export const StoreContext = createContext(null);
 
-const StoreContextProvider = (probs) => {
+const StoreContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
   const [token, setToken] = useState("");
   const [food_list, setFoodList] = useState([]);
@@ -96,7 +96,7 @@ const StoreContextProvider = (probs) => {
 
   return (
     <StoreContext.Provider value={contextValue}>
-      {probs.children}
+      {props.children}
     </StoreContext.Provider>
   );
 };

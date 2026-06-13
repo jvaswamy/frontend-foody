@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
-// import { food_list } from "../assets/assets";
+
 import { API_URL } from "../data/apiPath";
 
 export const StoreContext = createContext(null);
@@ -9,6 +9,7 @@ const StoreContextProvider = (probs) => {
   const [cartItems, setCartItems] = useState({});
   const [token, setToken] = useState("");
   const [food_list, setFoodList] = useState([]);
+  const [foodLoading, setFoodLoading] = useState(false);
 
   const addToCart = async (itemId) => {
     if (!cartItems[itemId]) {
@@ -49,6 +50,7 @@ const StoreContextProvider = (probs) => {
 
   const contextValue = {
     food_list,
+    foodLoading,
     cartItems,
     setCartItems,
     addToCart,
@@ -60,8 +62,16 @@ const StoreContextProvider = (probs) => {
   };
 
   const fetchFoodList = async () => {
-    const response = await axios.get(API_URL + "/api/food/list");
-    setFoodList(response.data.data);
+    try {
+      setFoodLoading(true);
+      const response = await axios.get(API_URL + "/api/food/list");
+      setFoodList(response.data.data);
+    } catch (e) {
+      console.error("Failed to fetch food list", e);
+      setFoodList([]);
+    } finally {
+      setFoodLoading(false);
+    }
   };
 
   const loadCartData = async (token) => {

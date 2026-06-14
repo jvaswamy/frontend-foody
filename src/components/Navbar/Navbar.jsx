@@ -3,6 +3,7 @@ import { assets } from "../../assets/assets";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
 import { StoreContext } from "../../context/StoreContext";
+import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { GrRestaurant } from "react-icons/gr";
 
@@ -14,7 +15,7 @@ const Header = ({ setShowLogin }) => {
   const { getTotalCartAmount, token, setToken } = useContext(StoreContext);
 
   const logOutHandler = () => {
-    localStorage.removeItem("token");
+    Cookies.remove("token");
     setToken("");
     navigate("/");
   };

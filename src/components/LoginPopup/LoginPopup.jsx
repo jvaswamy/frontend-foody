@@ -31,14 +31,17 @@ function LoginPopup({ setShowLogin }) {
     } else {
       newUrl += "/api/user/register";
     }
-    const response = await axios.post(newUrl, data);
-
-    if (response.data.success) {
-      setToken(response.data.token);
-      localStorage.setItem("token", response.data.token);
-      setShowLogin(false);
-    } else {
-      toast.error(response.data.message);
+    try {
+      const response = await axios.post(newUrl, data);
+      if (response.data && response.data.success) {
+        setToken(response.data.token);
+        setShowLogin(false);
+      } else {
+        toast.error(response.data?.message || "Login failed");
+      }
+    } catch (err) {
+      console.error("Login/Register error", err);
+      toast.error(err.response?.data?.message || err.message || "Network error");
     }
   };
 
@@ -54,13 +57,11 @@ function LoginPopup({ setShowLogin }) {
           />
         </div>
         <div className="login-popup-inputs">
-          {currState === "Login" ? (
-            <></>
-          ) : (
+          {currState === "Sign Up" && (
             <input
               onChange={onChangeHandler}
               name="userName"
-              value={data.name}
+              value={data.userName}
               type="text"
               placeholder="Your Name"
               required
@@ -86,19 +87,21 @@ function LoginPopup({ setShowLogin }) {
         <button type="submit">
           {currState === "Sign Up" ? "Create Account" : "Login"}
         </button>
-        <div className="login-popup-condition">
-          <input type="checkbox" required />
-          <p>
-            By continuing, i agree to the Terms of Service and Privacy Policy.
-          </p>
-        </div>
+        {currState === "Sign Up" && (
+          <div className="login-popup-condition">
+            <input type="checkbox" required />
+            <p>
+              By continuing, I agree to the Terms of Service and Privacy Policy.
+            </p>
+          </div>
+        )}
         {currState === "Login" ? (
-          <p onClick={() => setCurrState("Sigh Up")}>
-            Create a new account?<span>Click here</span>
+          <p onClick={() => setCurrState("Sign Up")}>
+            Create a new account? <span>Click here</span>
           </p>
         ) : (
           <p onClick={() => setCurrState("Login")}>
-            Already Have an account? <span>Login here</span>
+            Already have an account? <span>Login here</span>
           </p>
         )}
       </form>

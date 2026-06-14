@@ -68,8 +68,19 @@ const MyOrders = () => {
               <p>${order.amount}.00</p>
               <p>Items:{order.items.length}</p>
               <p>
-                <span>&#x25cf;</span>
-                <b>{order.status}</b>
+                {(() => {
+                  const s = String(order.status || "").toLowerCase();
+                  let cls = "status-default";
+                  if (s.includes("in progress") || s.includes("inprogress")) cls = "status-in-progress";
+                  else if (s.includes("out") && s.includes("deliver")) cls = "status-out";
+                  else if (s.includes("deliver")) cls = "status-delivered";
+                  return (
+                    <>
+                      <span className={cls}>&#x25cf;</span>
+                      <b className={cls}>{order.status}</b>
+                    </>
+                  );
+                })()}
               </p>
               <button onClick={fetchOrders}>Track Order</button>
             </div>

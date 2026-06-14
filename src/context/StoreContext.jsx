@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 import { createContext, useEffect, useState } from "react";
 
 import { API_URL } from "../data/apiPath";
@@ -7,7 +8,7 @@ export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
-  const [token, setToken] = useState("");
+  const [token, _setToken] = useState("");
   const [food_list, setFoodList] = useState([]);
   const [foodLoading, setFoodLoading] = useState(false);
 
@@ -48,6 +49,16 @@ const StoreContextProvider = (props) => {
     return totalAmount;
   };
 
+  const setToken = (val) => {
+    if (val) {
+      Cookies.set("token", val, { expires: 7, sameSite: "lax" });
+      _setToken(val);
+    } else {
+      Cookies.remove("token");
+      _setToken("");
+    }
+  };
+
   const contextValue = {
     food_list,
     foodLoading,
@@ -86,9 +97,10 @@ const StoreContextProvider = (props) => {
   useEffect(() => {
     async function loadData() {
       await fetchFoodList();
-      if (localStorage.getItem("token")) {
-        setToken(localStorage.getItem("token"));
-        await loadCartData(localStorage.getItem("token"));
+      const cookieToken = Cookies.get("token");
+      if (cookieToken) {
+        setToken(cookieToken);
+        await loadCartData(cookieToken);
       }
     }
     loadData();

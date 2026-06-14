@@ -21,11 +21,28 @@
   width: 50px;
 }
 .my-orders-order p span {
-  color: tomato;
+  margin-right: 8px;
 }
 .my-orders-order p b {
   font-weight: 500;
-  color: #454545;
+}
+
+/* Status colors */
+
+.status-out,
+.status-out b,
+.my-orders-order p .status-out {
+  color: blue;
+}
+.status-delivered,
+.status-delivered b,
+.my-orders-order p .status-delivered {
+  color: red;
+}
+.status-default,
+.my-orders-order p .status-default {
+  /* color: #454545; */
+  color: green;
 }
 .my-orders-order button {
   border: none;

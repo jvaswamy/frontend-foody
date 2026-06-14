@@ -11,6 +11,7 @@ const StoreContextProvider = (props) => {
   const [token, _setToken] = useState("");
   const [food_list, setFoodList] = useState([]);
   const [foodLoading, setFoodLoading] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
 
   const addToCart = async (itemId) => {
     if (!cartItems[itemId]) {
@@ -70,6 +71,8 @@ const StoreContextProvider = (props) => {
     API_URL,
     token,
     setToken,
+    showLogin,
+    setShowLogin,
   };
 
   const fetchFoodList = async () => {
@@ -101,10 +104,33 @@ const StoreContextProvider = (props) => {
       if (cookieToken) {
         setToken(cookieToken);
         await loadCartData(cookieToken);
+      } else {
+        const saved = localStorage.getItem("cartItems");
+        if (saved) {
+          try {
+            setCartItems(JSON.parse(saved));
+          } catch (e) {
+            console.error("Failed to parse saved cart items", e);
+            setCartItems({});
+          }
+        }
       }
     }
     loadData();
   }, []);
+
+  // Persist cartItems locally for unauthenticated users
+  useEffect(() => {
+    if (token) {
+      localStorage.removeItem("cartItems");
+    } else {
+      try {
+        localStorage.setItem("cartItems", JSON.stringify(cartItems));
+      } catch (e) {
+        console.error("Failed to save cart items to localStorage", e);
+      }
+    }
+  }, [cartItems, token]);
 
   return (
     <StoreContext.Provider value={contextValue}>

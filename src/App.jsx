@@ -1,5 +1,5 @@
 ﻿import { Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { useContext } from "react";
 import HomePage from "./pages/Home/Home";
 import CartPage from "./pages/Cart/Cart";
 import NotFoundPage from "./pages/NotFoundPage";
@@ -10,8 +10,10 @@ import LoginPopup from "./components/LoginPopup/LoginPopup";
 import VerifyPage from "./pages/Verify/Verify";
 import MyOrders from "./pages/Myorders/MyOrders";
 
+import { StoreContext } from "./context/StoreContext";
+
 function App() {
-  const [showLogin, setShowLogin] = useState(false);
+  const { showLogin, setShowLogin } = useContext(StoreContext);
 
   return (
     <>

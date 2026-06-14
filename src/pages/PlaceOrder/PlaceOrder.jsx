@@ -5,8 +5,14 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function PlaceOrder() {
-  const { getTotalCartAmount, token, food_list, cartItems, API_URL } =
-    useContext(StoreContext);
+  const {
+    getTotalCartAmount,
+    token,
+    food_list,
+    cartItems,
+    API_URL,
+    setShowLogin,
+  } = useContext(StoreContext);
 
   const [data, setData] = useState({
     firstName: "",
@@ -60,6 +66,7 @@ function PlaceOrder() {
 
   useEffect(() => {
     if (!token) {
+      setShowLogin(true);
       navigate("/cart");
     } else if (getTotalCartAmount() === 0) {
       navigate("/cart");
@@ -172,6 +179,13 @@ function PlaceOrder() {
             </div>
           </div>
           <button type="submit">Proceed to Payment</button>
+          <p className="stripe-note">
+            Note: For Stripe payment testing, please use this dummy card number:{" "}
+            <span>4000 0035 6000 0123.</span>
+            <br />
+            For the remaining card details (expiry date, CVV, and name), you can
+            use any valid dummy information.
+          </p>
         </div>
       </div>
     </form>
